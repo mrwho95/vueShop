@@ -8,7 +8,7 @@
         <div class="sidebar-content">
           <!-- sidebar-brand  -->
           <div class="sidebar-item sidebar-brand">
-            <a href="#">pro sidebar</a>
+            <a href="#">Vue Shop</a>
             <div id="close-sidebar" @click="closeMenu">
               <i class="fas fa-times"></i>
             </div>
@@ -46,16 +46,16 @@
           <!-- sidebar-menu  -->
           <div class="sidebar-item sidebar-menu">
             <ul>
-              <li class="header-menu">
+              <!-- <li class="header-menu">
                 <span>General</span>
-              </li>
-              <li class="sidebar-dropdown">
-                <a href="#">
+              </li>-->
+              <li>
+                <router-link to="/admin/overview">
                   <i class="fa fa-tachometer-alt"></i>
-                  <span class="menu-text">Dashboard</span>
-                  <span class="badge badge-pill badge-warning">New</span>
-                </a>
-                <div class="sidebar-submenu">
+                  <span class="menu-text">Overview</span>
+                  <!-- <span class="badge badge-pill badge-warning">New</span> -->
+                </router-link>
+                <!-- <div class="sidebar-submenu">
                   <ul>
                     <li>
                       <a href="#">
@@ -70,29 +70,29 @@
                       <a href="#">Dashboard 3</a>
                     </li>
                   </ul>
-                </div>
+                </div>-->
               </li>
 
-              <li class="header-menu">
+              <!-- <li class="header-menu">
                 <span>Extra</span>
-              </li>
+              </li>-->
               <li>
-                <a href="#">
+                <router-link to="/admin/products">
                   <i class="fa fa-book"></i>
-                  <span class="menu-text">Documentation</span>
-                  <span class="badge badge-pill badge-primary">Beta</span>
-                </a>
+                  <span class="menu-text">Products</span>
+                  <!-- <span class="badge badge-pill badge-primary">Beta</span> -->
+                </router-link>
               </li>
               <li>
                 <a href="#">
                   <i class="fa fa-calendar"></i>
-                  <span class="menu-text">Calendar</span>
+                  <span class="menu-text">Orders</span>
                 </a>
               </li>
               <li>
                 <a href="#">
                   <i class="fa fa-folder"></i>
-                  <span class="menu-text">Examples</span>
+                  <span class="menu-text">Logout</span>
                 </a>
               </li>
             </ul>
@@ -246,15 +246,7 @@
       </nav>
       <!-- page-content  -->
       <main class="page-content pt-2">
-        <div id="overlay" class="overlay"></div>
-        <div class="container-fluid p-5">
-          <div class="row">
-            <div class="form-group col-md-12">
-              <h2>Pro Sidebar</h2>
-              <p>This is a responsive sidebar template with dropdown menu based on bootstrap framework.</p>
-            </div>
-          </div>
-        </div>
+        <router-view />
       </main>
       <!-- page-content" -->
     </div>
