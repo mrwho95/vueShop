@@ -9,6 +9,8 @@ import "./assets/app.scss";
 
 window.$ = window.jQuery = jQuery;
 
+Vue.component("Navbar", require("./components/NavBar.vue").default);
+
 Vue.config.productionTip = false;
 
 new Vue({
