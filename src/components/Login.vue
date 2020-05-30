@@ -133,6 +133,7 @@
 
 <script>
 import { fb } from "../firebase";
+import $ from "jquery";
 
 export default {
   name: "Login",
@@ -147,11 +148,30 @@ export default {
     };
   },
   methods: {
-    login() {},
+    login() {
+      fb.auth()
+        .signInWithEmailAndPassword(this.email, this.password)
+        .then(() => {
+          $("#login").modal("hide");
+          this.$router.replace("admin");
+        })
+        .catch(function(error) {
+          // Handle Errors here.
+          var errorCode = error.code;
+          var errorMessage = error.message;
+          if (errorCode == "auth/wrong-password") {
+            alert("Wrong Password");
+          } else {
+            alert(errorMessage);
+          }
+          console.log(error);
+        });
+    },
     register() {
       fb.auth()
         .createUserWithEmailAndPassword(this.email, this.password)
         .then(() => {
+          $("#login").modal("hide");
           this.$router.replace("admin");
         })
         .catch(function(error) {
