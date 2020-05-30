@@ -66,7 +66,9 @@
                 <td>{{ product.data().name }}</td>
                 <td>{{ product.data().price }}</td>
                 <td>
-                  <button class="btn btn-warning">Edit</button>
+                  <button class="btn btn-warning" @click="editProduct(product)">
+                    Edit
+                  </button>
                   <button
                     class="btn btn-danger"
                     @click="deleteProduct(product.id)"
@@ -80,11 +82,69 @@
         </div>
       </div>
     </div>
+
+    <!-- bootstrap modal -->
+    <!-- Modal -->
+    <div
+      class="modal fade"
+      id="edit"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="editLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="editLabel">Edit Product</h5>
+            <button
+              type="button"
+              class="close"
+              data-dismiss="modal"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div class="form-group">
+              <input
+                type="text"
+                v-model="product.name"
+                placeholder="Product Name"
+                class="form-control"
+              />
+            </div>
+            <div class="form-group">
+              <input
+                type="text"
+                v-model="product.price"
+                placeholder="Product Price"
+                class="form-control"
+              />
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-dismiss="modal"
+            >
+              Close
+            </button>
+            <button type="button" class="btn btn-primary" @click="updateData">
+              Save changes
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
 import { db } from "../firebase";
+import $ from "jquery";
 
 export default {
   name: "Products",
@@ -98,10 +158,29 @@ export default {
         name: null,
         price: null,
       },
+      activeItem: null,
     };
   },
   methods: {
     //methods function = @click
+    updateData() {
+      db.collection("products")
+        .doc(this.activeItem)
+        .update(this.product)
+        .then(function() {
+          $("#edit").modal("hide");
+          console.log("Document successfully updated!");
+        })
+        .catch(function(error) {
+          // The document probably doesn't exist.
+          console.error("Error updating document: ", error);
+        });
+    },
+    editProduct(product) {
+      $("#edit").modal("show");
+      this.product = product.data();
+      this.activeItem = product.id;
+    },
     deleteProduct(doc) {
       if (confirm("Are you sure to delete?")) {
         db.collection("products")
