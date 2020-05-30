@@ -8,7 +8,44 @@
             <p>Hello World</p>
           </div>
           <div class="col-md-6">
-            <img src="/img/svg/product.svg" alt="overview image" class="img-fluid" />
+            <img
+              src="/img/svg/product.svg"
+              alt="overview image"
+              class="img-fluid"
+            />
+          </div>
+        </div>
+      </div>
+
+      <hr />
+
+      <h3>CRUD Product Firestore database</h3>
+      <div class="product-test">
+        <div class="row">
+          <div class="col-md-6">
+            <div class="form-group">
+              <input
+                type="text"
+                v-model="product.name"
+                placeholder="Product Name"
+                class="form-control"
+              />
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group">
+              <input
+                type="text"
+                v-model="product.price"
+                placeholder="Product Price"
+                class="form-control"
+              />
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group">
+              <button class="btn btn-primary" @click="saveData">Submit</button>
+            </div>
           </div>
         </div>
       </div>
@@ -17,14 +54,41 @@
 </template>
 
 <script>
+import { db } from "../firebase";
+
 export default {
   name: "Products",
   props: {
-    msg: String
-  }
+    msg: String,
+  },
+  data() {
+    return {
+      product: {
+        name: null,
+        price: null,
+      },
+    };
+  },
+  methods: {
+    saveData() {
+      db.collection("products")
+        .add(this.product)
+        .then((docRef) => {
+          //es6 function
+          console.log("Document written with ID: ", docRef.id);
+          this.reset();
+        })
+        .catch(function(error) {
+          console.error("Error adding document: ", error);
+        });
+    },
+
+    reset() {
+      Object.assign(this.$data, this.$options.data.apply(this));
+    },
+  },
 };
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped lang="scss">
-</style>
+<style scoped lang="scss"></style>
