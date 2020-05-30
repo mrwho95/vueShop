@@ -52,20 +52,32 @@
         <hr />
 
         <h3>Products List</h3>
-        <table>
-          <thead>
-            <tr>
-              <th>Name</th>
-              <th>Price</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-for="product in products" :key="product">
-              <td>{{ product.name }}</td>
-              <td>{{ product.price }}</td>
-            </tr>
-          </tbody>
-        </table>
+        <div class="table-responsive">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Price</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="product in products" :key="product">
+                <td>{{ product.data().name }}</td>
+                <td>{{ product.data().price }}</td>
+                <td>
+                  <button class="btn btn-warning">Edit</button>
+                  <button
+                    class="btn btn-danger"
+                    @click="deleteProduct(product.id)"
+                  >
+                    Delete
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   </div>
@@ -90,6 +102,19 @@ export default {
   },
   methods: {
     //methods function = @click
+    deleteProduct(doc) {
+      if (confirm("Are you sure to delete?")) {
+        db.collection("products")
+          .doc(doc)
+          .delete()
+          .then(function() {
+            console.log("Document successfully deleted!");
+          })
+          .catch(function(error) {
+            console.error("Error removing document: ", error);
+          });
+      }
+    },
     readData() {
       db.collection("products")
         .get()
@@ -97,7 +122,7 @@ export default {
           querySnapshot.forEach((doc) => {
             // doc.data() is never undefined for query doc snapshots
             // console.log(doc.id, " => ", doc.data());
-            this.products.push(doc.data());
+            this.products.push(doc);
           });
         });
     },
