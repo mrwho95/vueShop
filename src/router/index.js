@@ -4,6 +4,7 @@ import Home from "../views/Home.vue";
 import Admin from "../views/Admin.vue";
 import Overview from "../views/Overview.vue";
 import Products from "../views/Products.vue";
+import { fb } from "../firebase";
 
 Vue.use(VueRouter);
 
@@ -17,6 +18,7 @@ const routes = [
     path: "/admin",
     name: "admin",
     component: Admin,
+    meta: { requiresAuth: true },
     children: [
       {
         path: "overview",
@@ -45,6 +47,21 @@ const router = new VueRouter({
   mode: "history",
   base: process.env.BASE_URL,
   routes,
+});
+
+router.beforeEach((to, from, next) => {
+  const requiresAuth = to.matched.some((record) => record.meta.requiresAuth);
+  const currentUser = fb.auth().currentUser;
+
+  if (requiresAuth && !currentUser) {
+    // this route requires auth, check if logged in
+    // if not, redirect to login page.
+    next("/");
+  } else if (requiresAuth && currentUser) {
+    next();
+  } else {
+    next();
+  }
 });
 
 export default router;

@@ -1,7 +1,12 @@
 <template>
   <div class="admin">
     <div class="page-wrapper default-theme sidebar-bg bg1 toggled">
-      <a id="show-sidebar" @click="closeMenu" class="btn btn-sm btn-dark" href="#">
+      <a
+        id="show-sidebar"
+        @click="closeMenu"
+        class="btn btn-sm btn-dark"
+        href="#"
+      >
         <i class="fa fa-bars"></i>
       </a>
       <nav id="sidebar" class="sidebar-wrapper">
@@ -16,7 +21,11 @@
           <!-- sidebar-header  -->
           <div class="sidebar-item sidebar-header d-flex flex-nowrap">
             <div class="user-pic">
-              <img class="img-responsive img-rounded" src="img/user.jpg" alt="User picture" />
+              <img
+                class="img-responsive img-rounded"
+                src="img/user.jpg"
+                alt="User picture"
+              />
             </div>
             <div class="user-info">
               <span class="user-name">
@@ -34,7 +43,11 @@
           <div class="sidebar-item sidebar-search">
             <div>
               <div class="input-group">
-                <input type="text" class="form-control search-menu" placeholder="Search..." />
+                <input
+                  type="text"
+                  class="form-control search-menu"
+                  placeholder="Search..."
+                />
                 <div class="input-group-append">
                   <span class="input-group-text">
                     <i class="fa fa-search" aria-hidden="true"></i>
@@ -90,7 +103,7 @@
                 </a>
               </li>
               <li>
-                <a href="#">
+                <a @click="logout()">
                   <i class="fa fa-folder"></i>
                   <span class="menu-text">Logout</span>
                 </a>
@@ -102,11 +115,19 @@
         <!-- sidebar-footer  -->
         <div class="sidebar-footer">
           <div class="dropdown">
-            <a href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <a
+              href="#"
+              data-toggle="dropdown"
+              aria-haspopup="true"
+              aria-expanded="false"
+            >
               <i class="fa fa-bell"></i>
               <span class="badge badge-pill badge-warning notification">3</span>
             </a>
-            <div class="dropdown-menu notifications" aria-labelledby="dropdownMenuMessage">
+            <div
+              class="dropdown-menu notifications"
+              aria-labelledby="dropdownMenuMessage"
+            >
               <div class="notifications-header">
                 <i class="fa fa-bell"></i>
                 Notifications
@@ -115,12 +136,14 @@
               <a class="dropdown-item" href="#">
                 <div class="notification-content">
                   <div class="icon">
-                    <i class="fas fa-check text-success border border-success"></i>
+                    <i
+                      class="fas fa-check text-success border border-success"
+                    ></i>
                   </div>
                   <div class="content">
                     <div class="notification-detail">
-                      Lorem ipsum dolor sit amet consectetur adipisicing
-                      elit. In totam explicabo
+                      Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                      In totam explicabo
                     </div>
                     <div class="notification-time">6 minutes ago</div>
                   </div>
@@ -129,12 +152,14 @@
               <a class="dropdown-item" href="#">
                 <div class="notification-content">
                   <div class="icon">
-                    <i class="fas fa-exclamation text-info border border-info"></i>
+                    <i
+                      class="fas fa-exclamation text-info border border-info"
+                    ></i>
                   </div>
                   <div class="content">
                     <div class="notification-detail">
-                      Lorem ipsum dolor sit amet consectetur adipisicing
-                      elit. In totam explicabo
+                      Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                      In totam explicabo
                     </div>
                     <div class="notification-time">Today</div>
                   </div>
@@ -143,27 +168,39 @@
               <a class="dropdown-item" href="#">
                 <div class="notification-content">
                   <div class="icon">
-                    <i class="fas fa-exclamation-triangle text-warning border border-warning"></i>
+                    <i
+                      class="fas fa-exclamation-triangle text-warning border border-warning"
+                    ></i>
                   </div>
                   <div class="content">
                     <div class="notification-detail">
-                      Lorem ipsum dolor sit amet consectetur adipisicing
-                      elit. In totam explicabo
+                      Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                      In totam explicabo
                     </div>
                     <div class="notification-time">Yesterday</div>
                   </div>
                 </div>
               </a>
               <div class="dropdown-divider"></div>
-              <a class="dropdown-item text-center" href="#">View all notifications</a>
+              <a class="dropdown-item text-center" href="#"
+                >View all notifications</a
+              >
             </div>
           </div>
           <div class="dropdown">
-            <a href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <a
+              href="#"
+              data-toggle="dropdown"
+              aria-haspopup="true"
+              aria-expanded="false"
+            >
               <i class="fa fa-envelope"></i>
               <span class="badge badge-pill badge-success notification">7</span>
             </a>
-            <div class="dropdown-menu messages" aria-labelledby="dropdownMenuMessage">
+            <div
+              class="dropdown-menu messages"
+              aria-labelledby="dropdownMenuMessage"
+            >
               <div class="messages-header">
                 <i class="fa fa-envelope"></i>
                 Messages
@@ -179,8 +216,8 @@
                       <strong>Jhon doe</strong>
                     </div>
                     <div class="message-detail">
-                      Lorem ipsum dolor sit amet consectetur adipisicing
-                      elit. In totam explicabo
+                      Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                      In totam explicabo
                     </div>
                   </div>
                 </div>
@@ -195,8 +232,8 @@
                       <strong>Jhon doe</strong>
                     </div>
                     <div class="message-detail">
-                      Lorem ipsum dolor sit amet consectetur adipisicing
-                      elit. In totam explicabo
+                      Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                      In totam explicabo
                     </div>
                   </div>
                 </div>
@@ -211,18 +248,25 @@
                       <strong>Jhon doe</strong>
                     </div>
                     <div class="message-detail">
-                      Lorem ipsum dolor sit amet consectetur adipisicing
-                      elit. In totam explicabo
+                      Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                      In totam explicabo
                     </div>
                   </div>
                 </div>
               </a>
               <div class="dropdown-divider"></div>
-              <a class="dropdown-item text-center" href="#">View all messages</a>
+              <a class="dropdown-item text-center" href="#"
+                >View all messages</a
+              >
             </div>
           </div>
           <div class="dropdown">
-            <a href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <a
+              href="#"
+              data-toggle="dropdown"
+              aria-haspopup="true"
+              aria-expanded="false"
+            >
               <i class="fa fa-cog"></i>
               <span class="badge-sonar"></span>
             </a>
@@ -259,6 +303,7 @@
 // import HelloWorld from "@/components/HelloWorld.vue";
 // import Hero from "@/components/Hero.vue";
 import $ from "jquery";
+import { fb } from "../firebase";
 
 export default {
   name: "Admin",
@@ -269,7 +314,20 @@ export default {
   methods: {
     closeMenu() {
       $(".page-wrapper").toggleClass("toggled");
-    }
-  }
+    },
+    logout() {
+      fb.auth()
+        .signOut()
+        .then(() => {
+          this.$router.replace("/");
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+  },
 };
 </script>
+
+<!-- Add "scoped" attribute to limit CSS to this component only -->
+<style scoped lang="scss"></style>
