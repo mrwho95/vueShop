@@ -21,7 +21,7 @@
 
       <h3>CRUD Product Firestore database</h3>
       <div class="product-test">
-        <div class="row">
+        <!-- <div class="row">
           <div class="col-md-6">
             <div class="form-group">
               <input
@@ -47,31 +47,39 @@
               <button class="btn btn-primary" @click="saveData">Submit</button>
             </div>
           </div>
-        </div>
+        </div> -->
 
         <hr />
 
-        <h3>Products List</h3>
+        <h3 class="d-inline-block">Products List</h3>
+        <button class="btn btn-primary float-right" @click="addNew">
+          Add Product
+        </button>
         <div class="table-responsive">
           <table class="table">
             <thead>
               <tr>
+                <th>Image</th>
                 <th>Name</th>
                 <th>Price</th>
+                <th>Tag</th>
+                <th>Description</th>
                 <th>Action</th>
               </tr>
             </thead>
             <tbody>
-              <tr v-for="product in products" :key="product">
-                <td>{{ product.data().name }}</td>
-                <td>{{ product.data().price }}</td>
+              <tr v-for="product in products" :key="product.id" >
+                <td>{{ product.image }}</td>
+                <td>{{ product.name }}</td>
+                <td>{{ product.price }}</td>
+                <td>{{ product.tag }}</td>
+                <td>{{ product.description }}</td>
                 <td>
-                  <button class="btn btn-warning" @click="editProduct(product)">
+                  <button class="btn btn-warning">
                     Edit
                   </button>
                   <button
                     class="btn btn-danger"
-                    @click="deleteProduct(product.id)"
                   >
                     Delete
                   </button>
@@ -87,13 +95,13 @@
     <!-- Modal -->
     <div
       class="modal fade"
-      id="edit"
+      id="product"
       tabindex="-1"
       role="dialog"
       aria-labelledby="editLabel"
       aria-hidden="true"
     >
-      <div class="modal-dialog" role="document">
+      <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
           <div class="modal-header">
             <h5 class="modal-title" id="editLabel">Edit Product</h5>
@@ -107,21 +115,79 @@
             </button>
           </div>
           <div class="modal-body">
-            <div class="form-group">
-              <input
-                type="text"
-                v-model="product.name"
-                placeholder="Product Name"
-                class="form-control"
-              />
-            </div>
-            <div class="form-group">
-              <input
-                type="text"
-                v-model="product.price"
-                placeholder="Product Price"
-                class="form-control"
-              />
+            <div class="row">
+              <!-- main product -->
+              <div class="col-md-8">
+                <div class="form-group">
+                  <input
+                    type="text"
+                    placeholder="Product Name"
+                    v-model="product.name"
+                    class="form-control"
+                  />
+                </div>
+
+                <div class="form-group">
+                  <!-- <vue-editor v-model="product.description"></vue-editor> -->
+                  <textarea v-model="product.description" class="form-control" placeholder="Product Description" style="width:100%; height:100%;"></textarea>
+                </div>
+              </div>
+              <!-- product sidebar -->
+              <div class="col-md-4">
+                <h4 class="display-6">Product Details</h4>
+                <hr />
+
+                <div class="form-group">
+                  <input
+                    type="text"
+                    placeholder="Product price"
+                    v-model="product.price"
+                    class="form-control"
+                  />
+                </div>
+
+                <div class="form-group">
+                  <input
+                    type="text"
+                    @keyup.188="addTag"
+                    placeholder="Product tags"
+                    v-model="product.tag"
+                    class="form-control"
+                  />
+
+                  <!-- <div class="d-flex">
+                    <p v-for="tag in product.tags" :key="tag">
+                      <span class="p-1">{{ tag }}</span>
+                    </p>
+                  </div> -->
+                </div>
+
+                <div class="form-group">
+                  <label for="product_image">Product Images</label>
+                  <input
+                    type="file"
+                    @change="uploadImage"
+                    class="form-control"
+                  />
+                </div>
+
+                <div class="form-group d-flex">
+                  <div
+                    class="p-1"
+                    v-for="(image, index) in product.images"
+                    :key="index"
+                  >
+                    <div class="img-wrapp">
+                      <img :src="image" alt="" width="80px" />
+                      <span
+                        class="delete-img"
+                        @click="deleteImage(image, index)"
+                        >X</span
+                      >
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
           <div class="modal-footer">
@@ -132,7 +198,7 @@
             >
               Close
             </button>
-            <button type="button" class="btn btn-primary" @click="updateData">
+            <button type="button" class="btn btn-primary" @click="addProduct()">
               Save changes
             </button>
           </div>
@@ -143,7 +209,7 @@
 </template>
 
 <script>
-import { db } from "../firebase";
+import { db} from "../firebase";
 import $ from "jquery";
 
 export default {
@@ -157,88 +223,67 @@ export default {
       product: {
         name: null,
         price: null,
+        description: null,
+        tag: null,
+        image: null
       },
       activeItem: null,
     };
   },
+  firestore () {
+    return {
+        // Collection
+        products: db.collection('products'),
+        // Doc
+        // ford: firestore.collection('cars').doc('ford')
+    }
+  },
   methods: {
     //methods function = @click
-    watcher() {
-      db.collection("products").onSnapshot((querySnapshot) => {
-        this.products = [];
-        querySnapshot.forEach((doc) => {
-          this.products.push(doc);
-        });
-      });
+    addNew() {
+      $("#product").modal("show");
     },
+   
     updateData() {
-      db.collection("products")
-        .doc(this.activeItem)
-        .update(this.product)
-        .then(() => {
-          $("#edit").modal("hide");
-          this.watcher();
-          console.log("Document successfully updated!");
-        })
-        .catch(function(error) {
-          // The document probably doesn't exist.
-          console.error("Error updating document: ", error);
-        });
+      
     },
-    editProduct(product) {
-      $("#edit").modal("show");
-      this.product = product.data();
-      this.activeItem = product.id;
+    editProduct() {
+      
     },
-    deleteProduct(doc) {
-      if (confirm("Are you sure to delete?")) {
-        db.collection("products")
-          .doc(doc)
-          .delete()
-          .then(function() {
-            console.log("Document successfully deleted!");
-          })
-          .catch(function(error) {
-            console.error("Error removing document: ", error);
-          });
-      }
+    deleteProduct() {
+      
     },
     readData() {
-      db.collection("products")
-        .get()
-        .then((querySnapshot) => {
-          querySnapshot.forEach((doc) => {
-            // doc.data() is never undefined for query doc snapshots
-            // console.log(doc.id, " => ", doc.data());
-            this.products.push(doc);
-          });
-        });
+      
     },
-    saveData() {
-      db.collection("products")
-        .add(this.product)
-        .then((docRef) => {
-          //es6 function
-          console.log("Document written with ID: ", docRef.id);
-          this.reset();
-          this.readData();
-        })
-        .catch(function(error) {
-          console.error("Error adding document: ", error);
-        });
+    addProduct() {
+      this.$firestore.products.add(
+            this.product
+        );
+      $('#product').modal('hide');
     },
 
-    reset() {
-      Object.assign(this.$data, this.$options.data.apply(this));
-    },
+    
   },
 
   //auto run function
   created() {
-    this.readData();
+    
   },
 };
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped lang="scss"></style>
+<style scoped lang="scss">
+.img-wrapp {
+  position: relative;
+}
+.img-wrapp span.delete-img {
+  position: absolute;
+  top: -14px;
+  left: -2px;
+}
+.img-wrapp span.delete-img:hover {
+  cursor: pointer;
+}
+</style>
