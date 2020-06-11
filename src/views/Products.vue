@@ -75,7 +75,7 @@
                 <td>{{ product.tag }}</td>
                 <td>{{ product.description }}</td>
                 <td>
-                  <button class="btn btn-warning">
+                  <button class="btn btn-warning" @click="editProduct(product)">
                     Edit
                   </button>
                   <button
@@ -166,7 +166,6 @@
                   <label for="product_image">Product Images</label>
                   <input
                     type="file"
-                    @change="uploadImage"
                     class="form-control"
                   />
                 </div>
@@ -198,8 +197,11 @@
             >
               Close
             </button>
-            <button type="button" class="btn btn-primary" @click="addProduct()">
+            <button type="button" class="btn btn-primary" @click="addProduct()" v-if="modal == 'new'">
               Save changes
+            </button>
+            <button type="button" class="btn btn-primary" @click="updateProduct()" v-if="modal == 'edit'">
+              Apply changes
             </button>
           </div>
         </div>
@@ -229,6 +231,7 @@ export default {
         image: null
       },
       activeItem: null,
+      modal: null,
     };
   },
   firestore () {
@@ -242,14 +245,23 @@ export default {
   methods: {
     //methods function = @click
     addNew() {
+      this.modal = 'new';
       $("#product").modal("show");
     },
    
-    updateData() {
-      
+    updateProduct() {
+      this.$firestore.products.doc(this.product.id).update(this.product);
+      Swal.fire(
+            'Edited!',
+            'Your product data has been edited.',
+            'success'
+          );
+      $('#product').modal('hide');
     },
-    editProduct() {
-      
+    editProduct(product) {
+      this.modal = 'edit';
+      this.product = product;
+      $("#product").modal("show");
     },
     deleteProduct(doc) {
       Swal.fire({
@@ -282,6 +294,11 @@ export default {
       this.$firestore.products.add(
             this.product
         );
+        Swal.fire(
+            'Added!',
+            'Your prodcut has been added.',
+            'success'
+          );
       $('#product').modal('hide');
     },
 
