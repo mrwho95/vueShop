@@ -128,8 +128,8 @@
                 </div>
 
                 <div class="form-group">
-                  <!-- <vue-editor v-model="product.description"></vue-editor> -->
-                  <textarea v-model="product.description" class="form-control" placeholder="Product Description" style="width:100%; height:100%;"></textarea>
+                  <vue-editor v-model="product.description"></vue-editor>
+                  <!-- <textarea v-model="product.description" class="form-control" placeholder="Product Description" style="width:100%; height:100%;"></textarea> -->
                 </div>
               </div>
               <!-- product sidebar -->
@@ -214,11 +214,15 @@
 import { db} from "../firebase";
 import $ from "jquery";
 import Swal from "sweetalert2";
+import {VueEditor} from "vue2-editor";
 
 export default {
   name: "Products",
   props: {
     msg: String,
+  },
+  components: {
+    VueEditor
   },
   data() {
     return {
