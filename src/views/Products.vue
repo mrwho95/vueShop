@@ -79,7 +79,7 @@
                     Edit
                   </button>
                   <button
-                    class="btn btn-danger"
+                    class="btn btn-danger" @click="deleteProduct(product)"
                   >
                     Delete
                   </button>
@@ -211,6 +211,7 @@
 <script>
 import { db} from "../firebase";
 import $ from "jquery";
+import Swal from "sweetalert2";
 
 export default {
   name: "Products",
@@ -250,8 +251,29 @@ export default {
     editProduct() {
       
     },
-    deleteProduct() {
-      
+    deleteProduct(doc) {
+      Swal.fire({
+        title: 'Are you sure?',
+        text: "You won't be able to revert this!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, delete it!'
+      }).then((result) => {
+        if (result.value) {
+          this.$firestore.products.doc(doc['.key']).delete();
+          Swal.fire(
+            'Deleted!',
+            'Your data has been deleted.',
+            'success'
+          )
+          // Toast.fire({
+          //   icon: 'success',
+          //   title: 'Signed in successfully'
+          // })
+        }
+      })
     },
     readData() {
       
