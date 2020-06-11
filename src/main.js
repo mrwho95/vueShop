@@ -7,6 +7,9 @@ import "popper.js";
 import jQuery from "jquery";
 import "./assets/app.scss";
 import { fb } from "./firebase";
+import VueFirestore from "vue-firestore";
+
+Vue.use(VueFirestore);
 
 window.$ = window.jQuery = jQuery;
 
